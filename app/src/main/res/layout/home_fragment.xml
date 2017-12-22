@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/homeFragmentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/mytoolbar"
+            layout="@layout/mytoolbar" />
+
+        <com.cjj.MaterialRefreshLayout
+            android:id="@+id/home_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:overlay="false"
+            app:wave_color="@color/material_red"
+            app:wave_height_type="normal"
+            app:wave_show="true">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.cjj.MaterialRefreshLayout>
+
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_backTop"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="25dp"
+        android:src="@mipmap/logotop"
+        android:visibility="gone" />
+
+
+</RelativeLayout>
