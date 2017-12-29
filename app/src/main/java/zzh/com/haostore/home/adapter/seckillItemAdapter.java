@@ -42,23 +42,25 @@ public class seckillItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         SeckillItemHolder seckillItemHolder = (SeckillItemHolder) holder;
-         final String nowPriceString = "¥ " + seckill_info.getList().get(position).getCover_price();
+        final String nowPriceString = "¥ " + seckill_info.getList().get(position).getCover_price();
         final String oldPriceString = "¥ " + seckill_info.getList().get(position).getOrigin_price();
         final String seckillNameString = seckill_info.getList().get(position).getName();
+        final String seckillID = seckill_info.getList().get(position).getProduct_id();
         seckillItemHolder.nowPrice.setText(nowPriceString); //现价
         seckillItemHolder.oldPrice.setText(oldPriceString); //原价
-        final String  imgURL = Constant.BASE_IMGURL + seckill_info.getList().get(position).getFigure();
+        final String imgURL = Constant.BASE_IMGURL + seckill_info.getList().get(position).getFigure();
         Glide.with(context).load(imgURL).into(seckillItemHolder.seckillTicketImg);
         //设置条目点击事件跳转到商品详情界面
         seckillItemHolder.seckillItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(context, GoodsInfoActivity.class);
-                GoodsInfoBean goodsInfoBean=new GoodsInfoBean();
+                GoodsInfoBean goodsInfoBean = new GoodsInfoBean();
                 goodsInfoBean.setCover_price(nowPriceString);
                 goodsInfoBean.setFigure(imgURL);
                 goodsInfoBean.setName(seckillNameString);
-                it.putExtra(Constant.GOODS_INFO_BEAN,goodsInfoBean);
+                goodsInfoBean.setProduct_id(seckillID);
+                it.putExtra(Constant.GOODS_INFO_BEAN, goodsInfoBean);
                 context.startActivity(it);
             }
         });

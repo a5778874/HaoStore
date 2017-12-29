@@ -44,8 +44,9 @@ class hotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final String hotNameString, hotPriceString, hotImgUrl;
+        final String hotNameString, hotPriceString, hotImgUrl, hotID;
         mHolder mholder = (mHolder) holder;
+        hotID = hotInfoBeanList.get(position).getProduct_id();
         hotNameString = hotInfoBeanList.get(position).getName();
         mholder.hotName.setText(hotNameString);
         hotPriceString = "¥" + hotInfoBeanList.get(position).getCover_price();
@@ -56,12 +57,14 @@ class hotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                Intent it = new Intent(context, GoodsInfoActivity.class);;
-                GoodsInfoBean goodsInfoBean=new GoodsInfoBean();
+                Intent it = new Intent(context, GoodsInfoActivity.class);
+                ;
+                GoodsInfoBean goodsInfoBean = new GoodsInfoBean();
                 goodsInfoBean.setCover_price(hotPriceString);
                 goodsInfoBean.setFigure(hotImgUrl);
                 goodsInfoBean.setName(hotNameString);
-                it.putExtra(Constant.GOODS_INFO_BEAN,goodsInfoBean);
+                goodsInfoBean.setProduct_id(hotID);
+                it.putExtra(Constant.GOODS_INFO_BEAN, goodsInfoBean);
                 context.startActivity(it);
             }
         });

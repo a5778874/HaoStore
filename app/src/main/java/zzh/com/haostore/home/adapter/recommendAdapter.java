@@ -41,6 +41,7 @@ class recommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         RecommendItemHolder rHolder = (RecommendItemHolder) holder;
+        final String recommendID = recommendInfoBeanList.get(position).getProduct_id();
         final String recommendNameString = recommendInfoBeanList.get(position).getName();
         final String recommendPriceString = "¥ " + recommendInfoBeanList.get(position).getCover_price();
         rHolder.recommendName.setText(recommendNameString);
@@ -55,6 +56,7 @@ class recommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 goodsInfoBean.setCover_price(recommendPriceString);
                 goodsInfoBean.setFigure(recommendImg);
                 goodsInfoBean.setName(recommendNameString);
+                goodsInfoBean.setProduct_id(recommendID);
                 it.putExtra(Constant.GOODS_INFO_BEAN,goodsInfoBean);
                 context.startActivity(it);
             }
