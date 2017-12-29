@@ -16,6 +16,7 @@ import java.util.List;
 
 import zzh.com.haostore.R;
 import zzh.com.haostore.app.Constant;
+import zzh.com.haostore.home.bean.GoodsInfoBean;
 import zzh.com.haostore.home.bean.HomeResultBean;
 import zzh.com.haostore.view.GoodsInfoView.GoodsInfoActivity;
 
@@ -50,11 +51,11 @@ class recommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(context, GoodsInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("goodName", recommendNameString);
-                bundle.putString("goodPrice", recommendPriceString);
-                bundle.putString("goodImg", recommendImg);
-                it.putExtra("goodsInfo", bundle);
+                GoodsInfoBean goodsInfoBean=new GoodsInfoBean();
+                goodsInfoBean.setCover_price(recommendPriceString);
+                goodsInfoBean.setFigure(recommendImg);
+                goodsInfoBean.setName(recommendNameString);
+                it.putExtra(Constant.GOODS_INFO_BEAN,goodsInfoBean);
                 context.startActivity(it);
             }
         });

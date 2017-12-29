@@ -17,6 +17,7 @@ import java.util.List;
 
 import zzh.com.haostore.R;
 import zzh.com.haostore.app.Constant;
+import zzh.com.haostore.home.bean.GoodsInfoBean;
 import zzh.com.haostore.home.bean.HomeResultBean;
 import zzh.com.haostore.view.GoodsInfoView.GoodsInfoActivity;
 
@@ -55,12 +56,12 @@ class hotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                Intent it = new Intent(context, GoodsInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("goodName", hotNameString);
-                bundle.putString("goodPrice", hotPriceString);
-                bundle.putString("goodImg", hotImgUrl);
-                it.putExtra("goodsInfo", bundle);
+                Intent it = new Intent(context, GoodsInfoActivity.class);;
+                GoodsInfoBean goodsInfoBean=new GoodsInfoBean();
+                goodsInfoBean.setCover_price(hotPriceString);
+                goodsInfoBean.setFigure(hotImgUrl);
+                goodsInfoBean.setName(hotNameString);
+                it.putExtra(Constant.GOODS_INFO_BEAN,goodsInfoBean);
                 context.startActivity(it);
             }
         });

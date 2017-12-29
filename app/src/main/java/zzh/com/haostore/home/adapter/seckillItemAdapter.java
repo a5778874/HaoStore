@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 
 import zzh.com.haostore.R;
 import zzh.com.haostore.app.Constant;
+import zzh.com.haostore.home.bean.GoodsInfoBean;
 import zzh.com.haostore.home.bean.HomeResultBean;
 import zzh.com.haostore.view.GoodsInfoView.GoodsInfoActivity;
 
@@ -53,11 +54,11 @@ public class seckillItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(context, GoodsInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("goodName", seckillNameString);
-                bundle.putString("goodPrice", nowPriceString);
-                bundle.putString("goodImg", imgURL);
-                it.putExtra("goodsInfo", bundle);
+                GoodsInfoBean goodsInfoBean=new GoodsInfoBean();
+                goodsInfoBean.setCover_price(nowPriceString);
+                goodsInfoBean.setFigure(imgURL);
+                goodsInfoBean.setName(seckillNameString);
+                it.putExtra(Constant.GOODS_INFO_BEAN,goodsInfoBean);
                 context.startActivity(it);
             }
         });

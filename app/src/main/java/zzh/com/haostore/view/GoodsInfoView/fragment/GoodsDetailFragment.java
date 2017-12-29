@@ -24,6 +24,8 @@ import com.ysnows.page.Page;
 import java.util.ArrayList;
 
 import zzh.com.haostore.R;
+import zzh.com.haostore.app.Constant;
+import zzh.com.haostore.home.bean.GoodsInfoBean;
 
 
 /**
@@ -67,11 +69,12 @@ public class GoodsDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Intent it = getActivity().getIntent();
-        Bundle goodsInfoBundle = it.getBundleExtra("goodsInfo");
-        goodName = goodsInfoBundle.getString("goodName");
-        goodPrice = goodsInfoBundle.getString("goodPrice");
-        goodImg = goodsInfoBundle.getString("goodImg");
-
+        GoodsInfoBean gb = (GoodsInfoBean) it.getSerializableExtra(Constant.GOODS_INFO_BEAN);
+        if (gb != null) {
+            goodName = gb.getName();
+            goodPrice = gb.getCover_price();
+            goodImg = gb.getFigure();
+        }
 
         initViews(view);
         initListener();
