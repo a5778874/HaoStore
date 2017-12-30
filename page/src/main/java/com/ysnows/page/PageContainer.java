@@ -6,9 +6,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Created by xianguangjin on 2017/3/23.
- */
 
 public class PageContainer extends CoordinatorLayout implements Page.OnScrollListener {
     private Page child;

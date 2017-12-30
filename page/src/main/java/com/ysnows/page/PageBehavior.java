@@ -10,9 +10,6 @@ import android.widget.Scroller;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by xianguangjin on 2016/12/30.
- */
 
 public class PageBehavior extends CoordinatorLayout.Behavior {
     private static final int PAGE_ONE = 1;

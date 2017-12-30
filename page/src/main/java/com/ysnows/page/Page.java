@@ -6,9 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-/**
- * Created by xianguangjin on 2017/3/10.
- */
+
 
 public class Page extends NestedScrollView {
     private boolean scrollAble = true;
