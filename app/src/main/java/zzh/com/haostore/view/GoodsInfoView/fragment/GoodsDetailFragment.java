@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,8 +42,10 @@ public class GoodsDetailFragment extends Fragment {
     private Page.OnScrollListener onScrollListener;
     private TextView goodsInfoStyle;                 //请选择款式条目
     private LinearLayout goodsInfoStyleItemLayout; //请选择款式
-    private TextView goodInfoName, goodInfoPrice, goodInfoDescription;
+    private TextView goodInfoName, goodInfoPrice,goodInfoDescription;
     private PhotoView goodPhoto;
+    private Button AddCartButton;
+    private GoodsInfoBean gb;
     String goodName, goodPrice, goodImg;
 
     public GoodsDetailFragment() {
@@ -69,7 +72,7 @@ public class GoodsDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Intent it = getActivity().getIntent();
-        GoodsInfoBean gb = (GoodsInfoBean) it.getSerializableExtra(Constant.GOODS_INFO_BEAN);
+        gb = (GoodsInfoBean) it.getSerializableExtra(Constant.GOODS_INFO_BEAN);
         if (gb != null) {
             goodName = gb.getName();
             goodPrice = gb.getCover_price();
@@ -96,6 +99,7 @@ public class GoodsDetailFragment extends Fragment {
         goodInfoPrice = view.findViewById(R.id.tv_goodInfoPrice);
         goodInfoDescription = view.findViewById(R.id.tv_goodInfoDescription);
         goodPhoto = view.findViewById(R.id.pv_goodInfoImage);
+        AddCartButton = view.findViewById(R.id.btn_good_info_addcart);
 
         webview = view.findViewById(R.id.webview);
         initWebView();
@@ -132,6 +136,13 @@ public class GoodsDetailFragment extends Fragment {
                     goodsInfoStyle.setCompoundDrawables(null, null, drawable, null);
                     goodsInfoStyleItemLayout.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        AddCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

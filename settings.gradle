@@ -1,1 +1,1 @@
-include ':app', ':page', ':numview'
+include ':app', ':page', ':numview', ':greendao_test'
