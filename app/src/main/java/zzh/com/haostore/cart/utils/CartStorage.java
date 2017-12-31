@@ -1,10 +1,11 @@
 package zzh.com.haostore.cart.utils;
 
 import android.content.Context;
-import android.util.SparseArray;
+
+import java.util.List;
 
 import zzh.com.haostore.app.MyApplication;
-import zzh.com.haostore.home.bean.GoodsInfoBean;
+import zzh.com.haostore.cart.beans.CartBean;
 
 /**
  * Created by Administrator on 2017/12/30.
@@ -14,7 +15,7 @@ public class CartStorage {
 
     private static CartStorage cartStorage;
     private Context context;
-    private SparseArray<GoodsInfoBean> CartSparseArray;
+
 
     //初始化购物车存储类，使用单例能保证存储类是唯一的对象
     public static CartStorage getInstant(){
@@ -28,14 +29,16 @@ public class CartStorage {
 
     private CartStorage(Context context){
         this.context=context;
-        CartSparseArray=new SparseArray<>();
-        //当这类加载时，读取本地存储的购物车列表信息，放在集合里
-        localDataToList();
-    }
-
-    private void localDataToList() {
+        List<CartBean> cartBeans = showLocalList();
 
     }
+
+    private List<CartBean> showLocalList() {
+        return  SqlUtils.readLocal();
+    }
+
+
+
 
 
 }

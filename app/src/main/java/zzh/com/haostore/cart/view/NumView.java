@@ -101,6 +101,9 @@ public class NumView extends LinearLayout implements View.OnClickListener {
         return Integer.parseInt(tv_num.getText().toString());
     }
 
+    public void setNum(int number) {
+        setTextNum(number);
+    }
 
     private void setTextNum(int num) {
         tv_num.setText("" + num);

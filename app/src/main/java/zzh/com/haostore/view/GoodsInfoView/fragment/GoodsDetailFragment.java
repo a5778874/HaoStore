@@ -26,7 +26,10 @@ import java.util.ArrayList;
 
 import zzh.com.haostore.R;
 import zzh.com.haostore.app.Constant;
+import zzh.com.haostore.cart.beans.CartBean;
+import zzh.com.haostore.cart.utils.SqlUtils;
 import zzh.com.haostore.home.bean.GoodsInfoBean;
+import zzh.com.haostore.utils.ToastUtils;
 
 
 /**
@@ -143,6 +146,18 @@ public class GoodsDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                String product_id = gb.getProduct_id();
+                String name = gb.getName();
+                String price = gb.getCover_price();
+                String img = gb.getFigure();
+                int num=1;
+                CartBean cb=SqlUtils.quaryID(product_id);
+                if (cb!=null) {
+                   num=cb.getNum()+1;
+                }
+                CartBean cartBean = new CartBean(Long.parseLong(product_id), product_id, name, price, img, num, false);
+                SqlUtils.saveLocal(cartBean);
+                ToastUtils.showToast(getContext(),"加入购物车成功");
             }
         });
     }
