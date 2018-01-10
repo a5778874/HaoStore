@@ -1,8 +1,10 @@
 package zzh.com.haostore.cart.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import zzh.com.haostore.R;
+import zzh.com.haostore.cart.adapter.CartAdapter;
 import zzh.com.haostore.cart.beans.CartBean;
 import zzh.com.haostore.cart.utils.SqlUtils;
 
@@ -27,6 +30,7 @@ public class CartFragment extends Fragment {
     public static CartFragment fragment = null;
     private final  String TAG="tag";
     private List<CartBean> CartBeanList;
+
 
     @Nullable
     @Override
@@ -83,8 +87,12 @@ public class CartFragment extends Fragment {
     private void LoadCart(){
         CartBeanList = SqlUtils.readLocal();
         Log.d(TAG, "initView: "+CartBeanList.size());
+        //如果购物车没数据则显示空布局，有数据显示列表
         if (CartBeanList!=null&&CartBeanList.size()>0){
             ll_empty_cart.setVisibility(View.GONE);
+            rv_cart.setAdapter(new CartAdapter(getContext(),CartBeanList));
+            rv_cart.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+
         }else {
             ll_empty_cart.setVisibility(View.VISIBLE);
         }

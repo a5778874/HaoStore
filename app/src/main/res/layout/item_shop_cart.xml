@@ -11,16 +11,16 @@
         android:padding="10dp">
 
         <CheckBox
-            android:id="@+id/cb_gov"
+            android:id="@+id/cb_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:button="@drawable/checkbox_selector"
             android:checked="true"
-            android:clickable="false" />
+            android:clickable="true" />
 
         <ImageView
-            android:id="@+id/iv_gov"
+            android:id="@+id/iv_itemImg"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@mipmap/logodark"
@@ -33,7 +33,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_desc_gov"
+                android:id="@+id/tv_itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -48,12 +48,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_price_gov"
+                    android:id="@+id/tv_price"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="￥0.0"
+                    android:text="￥ 0.0"
                     android:textColor="#f00"
                     android:textSize="20sp" />
 
