@@ -36,7 +36,7 @@ public class SqlUtils {
 
     //修改某条数据
     public static void alterItem(CartBean bean) {
-        getSqlInstant().insert(bean);
+        getSqlInstant().update(bean);
     }
 
     //根据产品ID删除某条

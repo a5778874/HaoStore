@@ -74,4 +74,17 @@ public class CartBean {
     public void setIsCheck(boolean isCheck) {
         this.isCheck = isCheck;
     }
+
+    @Override
+    public String toString() {
+        return "CartBean{" +
+                "cartID=" + cartID +
+                ", product_id='" + product_id + '\'' +
+                ", name='" + name + '\'' +
+                ", price='" + price + '\'' +
+                ", imgURL='" + imgURL + '\'' +
+                ", num=" + num +
+                ", isCheck=" + isCheck +
+                '}';
+    }
 }

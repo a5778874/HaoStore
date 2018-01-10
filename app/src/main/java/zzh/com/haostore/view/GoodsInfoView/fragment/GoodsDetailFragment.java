@@ -45,7 +45,7 @@ public class GoodsDetailFragment extends Fragment {
     private Page.OnScrollListener onScrollListener;
     private TextView goodsInfoStyle;                 //请选择款式条目
     private LinearLayout goodsInfoStyleItemLayout; //请选择款式
-    private TextView goodInfoName, goodInfoPrice,goodInfoDescription;
+    private TextView goodInfoName, goodInfoPrice, goodInfoDescription;
     private PhotoView goodPhoto;
     private Button AddCartButton;
     private GoodsInfoBean gb;
@@ -150,14 +150,20 @@ public class GoodsDetailFragment extends Fragment {
                 String name = gb.getName();
                 String price = gb.getCover_price();
                 String img = gb.getFigure();
-                int num=1;
-                CartBean cb=SqlUtils.quaryID(product_id);
-                if (cb!=null) {
-                   num=cb.getNum()+1;
+                int num = 1;
+                CartBean cb = SqlUtils.quaryID(product_id);
+
+                //如果购物车有这件商品的话，数量直接加一。
+                if (cb != null) {
+                    num = cb.getNum() + 1;
+                    cb.setNum(num);
+                    SqlUtils.alterItem(cb);
+
+                } else {
+                    cb = new CartBean(Long.parseLong(product_id), product_id, name, price, img, num, false);
+                    SqlUtils.saveLocal(cb);
                 }
-                CartBean cartBean = new CartBean(Long.parseLong(product_id), product_id, name, price, img, num, false);
-                SqlUtils.saveLocal(cartBean);
-                ToastUtils.showToast(getContext(),"加入购物车成功");
+                ToastUtils.showToast(getContext(), "加入购物车成功");
             }
         });
     }

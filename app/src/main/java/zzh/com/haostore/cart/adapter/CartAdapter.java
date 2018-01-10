@@ -2,6 +2,7 @@ package zzh.com.haostore.cart.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import zzh.com.haostore.R;
 import zzh.com.haostore.cart.beans.CartBean;
+import zzh.com.haostore.cart.utils.CartStorage;
+import zzh.com.haostore.cart.utils.SqlUtils;
 import zzh.com.haostore.cart.view.NumView;
 
 /**
@@ -37,12 +40,12 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        myHolder mHolder = (myHolder) holder;
-        CartBean cartBean = cartBeanList.get(position);
+        final  myHolder mHolder = (myHolder) holder;
+        final CartBean cartBean = cartBeanList.get(position);
         String itemName = cartBean.getName();
         int num = cartBean.getNum();                    //数量
-        String singlePrice = cartBean.getPrice();       //单价
-        float sumPrice = Float.parseFloat(singlePrice.substring(2)) * num;//合计,价格格式为“￥ 18.00”所以要截取字符串转为数字
+        final float singlePrice = Float.parseFloat(cartBean.getPrice().substring(2));       //单价,价格格式为“￥ 18.00”所以要截取字符串转为数字
+        float sumPrice = singlePrice * num;//合计
         String imgURL = cartBean.getImgURL();
         boolean isCheck = cartBean.getIsCheck();
 
@@ -51,6 +54,16 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mHolder.itemName_text.setText(itemName);
         mHolder.numView.setNum(num);
         Glide.with(context).load(imgURL).into(mHolder.item_pic);
+
+        mHolder.numView.setOnNumChangeListener(new NumView.OnNumChangeListener() {
+            @Override
+            public void OnNumChange(int num) {
+                mHolder.price_text.setText(singlePrice*num+"");
+                cartBean.setNum(num);
+                SqlUtils.alterItem(cartBean);
+                Log.d("TAG", "OnNumChange: "+cartBean.toString());
+            }
+        });
 
     }
 
