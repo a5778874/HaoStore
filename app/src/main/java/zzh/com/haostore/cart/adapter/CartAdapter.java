@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,29 +40,38 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final  myHolder mHolder = (myHolder) holder;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final myHolder mHolder = (myHolder) holder;
         final CartBean cartBean = cartBeanList.get(position);
         String itemName = cartBean.getName();
         int num = cartBean.getNum();                    //数量
         final float singlePrice = Float.parseFloat(cartBean.getPrice().substring(2));       //单价,价格格式为“￥ 18.00”所以要截取字符串转为数字
         float sumPrice = singlePrice * num;//合计
         String imgURL = cartBean.getImgURL();
-        boolean isCheck = cartBean.getIsCheck();
-
+        final boolean isCheck = cartBean.getIsCheck();
         mHolder.checkBox.setChecked(isCheck);
-        mHolder.price_text.setText(sumPrice+"");
+
+        mHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CartBean cartBean1 = cartBean;
+                cartBean1.setIsCheck(isChecked);
+                SqlUtils.alterItem(cartBean1);
+            }
+        });
+        mHolder.price_text.setText("" + sumPrice);
         mHolder.itemName_text.setText(itemName);
         mHolder.numView.setNum(num);
         Glide.with(context).load(imgURL).into(mHolder.item_pic);
 
+        //修改数量的同时，保存到本地
         mHolder.numView.setOnNumChangeListener(new NumView.OnNumChangeListener() {
             @Override
             public void OnNumChange(int num) {
-                mHolder.price_text.setText(singlePrice*num+"");
+                mHolder.price_text.setText(singlePrice * num + "");
                 cartBean.setNum(num);
                 SqlUtils.alterItem(cartBean);
-                Log.d("TAG", "OnNumChange: "+cartBean.toString());
+                Log.d("TAG", "OnNumChange: " + cartBean.toString());
             }
         });
 
@@ -90,4 +100,26 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             numView = itemView.findViewById(R.id.numberview);
         }
     }
+
+
+    //删除选中数据
+    public void deleteDatas() {
+
+        if (cartBeanList.size() > 0 && cartBeanList != null) {
+
+            for (int i=0;i<cartBeanList.size();i++){
+                CartBean cartBean = cartBeanList.get(i);
+                if (cartBean.getIsCheck()){
+                    cartBeanList.remove(cartBean);    //从集合中删除
+                    SqlUtils.deleteItem(cartBean.getProduct_id());//删除本地数据库这条数据
+                    notifyItemRemoved(i);  //通知更新列表
+                    i--;                   //移除后循环列表数量减1
+                }
+
+            }
+
+        }
+
+
+}
 }
