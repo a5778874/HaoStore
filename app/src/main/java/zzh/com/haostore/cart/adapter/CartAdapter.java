@@ -16,9 +16,11 @@ import java.util.List;
 
 import zzh.com.haostore.R;
 import zzh.com.haostore.cart.beans.CartBean;
+import zzh.com.haostore.cart.fragment.CartFragment;
 import zzh.com.haostore.cart.utils.CartStorage;
 import zzh.com.haostore.cart.utils.SqlUtils;
 import zzh.com.haostore.cart.view.NumView;
+import zzh.com.haostore.utils.PriceFormatUtils;
 
 /**
  * Created by Administrator on 2018/1/10.
@@ -27,9 +29,11 @@ import zzh.com.haostore.cart.view.NumView;
 public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<CartBean> cartBeanList;
+    private CartFragment cartFragment;
 
-    public CartAdapter(Context context, List<CartBean> cartBeanList) {
-        this.context = context;
+    public CartAdapter(CartFragment cartFragment, List<CartBean> cartBeanList) {
+        this.context = cartFragment.getContext();
+        this.cartFragment=cartFragment;
         this.cartBeanList = cartBeanList;
     }
 
@@ -45,8 +49,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final CartBean cartBean = cartBeanList.get(position);
         String itemName = cartBean.getName();
         int num = cartBean.getNum();                    //数量
-        final float singlePrice = Float.parseFloat(cartBean.getPrice().substring(2));       //单价,价格格式为“￥ 18.00”所以要截取字符串转为数字
-        float sumPrice = singlePrice * num;//合计
+        final double singlePrice = PriceFormatUtils.formatPrice(cartBean.getPrice()) ;     //单价,价格格式为“¥ 18.00”所以要截取字符串转为数字
+        double sumPrice = singlePrice * num;//合计
         String imgURL = cartBean.getImgURL();
         final boolean isCheck = cartBean.getIsCheck();
         mHolder.checkBox.setChecked(isCheck);
@@ -54,9 +58,17 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 CartBean cartBean1 = cartBean;
                 cartBean1.setIsCheck(isChecked);
                 SqlUtils.alterItem(cartBean1);
+                //如果选择的条目为全部时，自动勾选全选
+                if (SqlUtils.quarySelected().size()==cartBeanList.size()){
+                    cartFragment.setCheckAll(true);
+                }else {
+                    cartFragment.setCheckAll(false);
+                }
+                cartFragment.showTotalPrice();
             }
         });
         mHolder.price_text.setText("" + sumPrice);
@@ -71,7 +83,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 mHolder.price_text.setText(singlePrice * num + "");
                 cartBean.setNum(num);
                 SqlUtils.alterItem(cartBean);
-                Log.d("TAG", "OnNumChange: " + cartBean.toString());
+                cartFragment.showTotalPrice();
             }
         });
 

@@ -33,6 +33,10 @@ public class SqlUtils {
        return getSqlInstant().queryBuilder().where(CartBeanDao.Properties.Product_id.eq(productID)).unique();
     }
 
+    public static  List<CartBean> quaryAll(){
+        return getSqlInstant().queryBuilder().build().list();
+    }
+
 
     //修改某条数据
     public static void alterItem(CartBean bean) {
@@ -44,5 +48,10 @@ public class SqlUtils {
         getSqlInstant().queryBuilder().where(CartBeanDao.Properties.Product_id.eq(productID)).buildDelete().executeDeleteWithoutDetachingEntities();
     }
 
+
+    public static List<CartBean> quarySelected(){
+        List<CartBean> list = getSqlInstant().queryBuilder().where(CartBeanDao.Properties.IsCheck.eq(true)).list();
+        return list;
+    }
 
 }

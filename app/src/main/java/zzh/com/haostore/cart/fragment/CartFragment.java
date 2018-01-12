@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ import zzh.com.haostore.R;
 import zzh.com.haostore.cart.adapter.CartAdapter;
 import zzh.com.haostore.cart.beans.CartBean;
 import zzh.com.haostore.cart.utils.SqlUtils;
+import zzh.com.haostore.utils.PriceFormatUtils;
+import zzh.com.haostore.utils.ToastUtils;
 
 /**
  * Created by Administrator on 2017/8/10.
@@ -30,7 +34,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private LinearLayout ll_empty_cart, ll_edit, ll_checkAll;
     private RecyclerView rv_cart;
     private TextView bt_edit, bt_editComplete;
-    private  Button bt_delete;
+    private TextView tv_totalPrice;
+    private CheckBox checkAll;
+    private  Button bt_delete,bt_pay;
     public static CartFragment fragment = null;
     private final String TAG = "tag";
     private List<CartBean> CartBeanList;
@@ -49,9 +55,25 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
 
     private void initView() {
+        tv_totalPrice = view.findViewById(R.id.tv_cart_total);
+        checkAll = view.findViewById(R.id.checkbox_all);
+        checkAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                List<CartBean> cartBeans = SqlUtils.quaryAll();
+                for (CartBean cartBean:cartBeans){
+                   cartBean.setIsCheck(isChecked);
+                   SqlUtils.alterItem(cartBean);
+                }
+                cartAdapter.notifyDataSetChanged();
+            }
+
+        });
         ll_empty_cart = view.findViewById(R.id.ll_empty_shopcart);
         ll_edit = view.findViewById(R.id.ll_edit);
         ll_checkAll = view.findViewById(R.id.ll_check_all);
+        bt_pay = view.findViewById(R.id.btn_pay);
+        bt_pay.setOnClickListener(this);
         bt_edit = view.findViewById(R.id.tv_shopcart_edit);
         bt_editComplete = view.findViewById(R.id.tv_shopcart_editComplete);
         bt_delete=view.findViewById(R.id.btn_delete);
@@ -60,7 +82,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         bt_delete.setOnClickListener(this);
         rv_cart = view.findViewById(R.id.cart_recyclerview);
         LoadCart();
-
+        showTotalPrice();
     }
 
     public static Fragment getInstance() {
@@ -101,7 +123,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         //如果购物车没数据则显示空布局，有数据显示列表
         if (CartBeanList != null && CartBeanList.size() > 0) {
             ll_empty_cart.setVisibility(View.GONE);
-            cartAdapter=new CartAdapter(getContext(), CartBeanList);
+            cartAdapter=new CartAdapter(CartFragment.this, CartBeanList);
             rv_cart.setAdapter(cartAdapter);
             rv_cart.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -127,8 +149,25 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_delete:
                 cartAdapter.deleteDatas();
+                showTotalPrice();
+                break;
+            case R.id.btn_pay:
+                ToastUtils.showToast(getContext(),"pay........");
                 break;
         }
 
+    }
+
+    public void showTotalPrice(){
+        List<CartBean> selectedList = SqlUtils.quarySelected();
+        double totalPrice=0.00;
+        for (CartBean bean:selectedList){
+          totalPrice+= PriceFormatUtils.formatPrice(bean.getPrice())*bean.getNum();
+        }
+        tv_totalPrice.setText(totalPrice+"");
+    }
+
+    public void setCheckAll(Boolean isCheck){
+        checkAll.setChecked(isCheck);
     }
 }
