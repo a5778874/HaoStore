@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import zzh.com.haostore.R;
+import zzh.com.haostore.app.Constant;
 import zzh.com.haostore.cart.beans.CartBean;
 import zzh.com.haostore.cart.fragment.CartFragment;
 import zzh.com.haostore.cart.utils.CartStorage;
@@ -63,11 +64,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 cartBean1.setIsCheck(isChecked);
                 SqlUtils.alterItem(cartBean1);
                 //如果选择的条目为全部时，自动勾选全选
-                if (SqlUtils.quarySelected().size()==cartBeanList.size()){
-                    cartFragment.setCheckAll(true);
-                }else {
-                    cartFragment.setCheckAll(false);
-                }
+                cartFragment.setCheckAll(isItemCheckAll());
+
                 cartFragment.showTotalPrice();
             }
         });
@@ -134,4 +132,18 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
 }
+
+    //把条目设置为全部勾选
+    public void  setItemCheckAll(Boolean isCheck){
+        for (CartBean cartBean:cartBeanList){
+            cartBean.setIsCheck(isCheck);
+            SqlUtils.alterItem(cartBean);
+        }
+    }
+
+    //判断列表是否全选
+    public boolean isItemCheckAll(){
+        return SqlUtils.quarySelected().size()==cartBeanList.size();
+    }
+
 }

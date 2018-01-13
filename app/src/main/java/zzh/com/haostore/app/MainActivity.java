@@ -58,11 +58,6 @@ public class MainActivity extends FragmentActivity {
 
         TabView tabView = (TabView) findViewById(R.id.tabView);
         tabView.setTabViewChild(tabViewChildList, getSupportFragmentManager());
-        tabView.setOnTabChildClickListener(new TabView.OnTabChildClickListener() {
-            @Override
-            public void onTabChildClick(int position, ImageView currentImageIcon, TextView currentTextView) {
-                Toast.makeText(getApplicationContext(), "position:" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 }

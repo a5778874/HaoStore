@@ -26,7 +26,7 @@ import zzh.com.haostore.utils.PriceFormatUtils;
 import zzh.com.haostore.utils.ToastUtils;
 
 /**
- * Created by Administrator on 2017/8/10.
+ * Created by ZZH on 2017/8/10.
  */
 
 public class CartFragment extends Fragment implements View.OnClickListener {
@@ -35,8 +35,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private RecyclerView rv_cart;
     private TextView bt_edit, bt_editComplete;
     private TextView tv_totalPrice;
-    private CheckBox checkAll;
-    private  Button bt_delete,bt_pay;
+    private CheckBox checkAll,editAll;
+    private Button bt_delete, bt_pay;
     public static CartFragment fragment = null;
     private final String TAG = "tag";
     private List<CartBean> CartBeanList;
@@ -57,18 +57,10 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private void initView() {
         tv_totalPrice = view.findViewById(R.id.tv_cart_total);
         checkAll = view.findViewById(R.id.checkbox_all);
-        checkAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                List<CartBean> cartBeans = SqlUtils.quaryAll();
-                for (CartBean cartBean:cartBeans){
-                   cartBean.setIsCheck(isChecked);
-                   SqlUtils.alterItem(cartBean);
-                }
-                cartAdapter.notifyDataSetChanged();
-            }
-
-        });
+        //全选框使用点击事件而不使用onItemChange事件为了避免单选全部时产生冲突
+        checkAll.setOnClickListener(this);
+        editAll= view.findViewById(R.id.cb_editall);
+        editAll.setOnClickListener(this);
         ll_empty_cart = view.findViewById(R.id.ll_empty_shopcart);
         ll_edit = view.findViewById(R.id.ll_edit);
         ll_checkAll = view.findViewById(R.id.ll_check_all);
@@ -76,12 +68,14 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         bt_pay.setOnClickListener(this);
         bt_edit = view.findViewById(R.id.tv_shopcart_edit);
         bt_editComplete = view.findViewById(R.id.tv_shopcart_editComplete);
-        bt_delete=view.findViewById(R.id.btn_delete);
+        bt_delete = view.findViewById(R.id.btn_delete);
         bt_edit.setOnClickListener(this);
         bt_editComplete.setOnClickListener(this);
         bt_delete.setOnClickListener(this);
         rv_cart = view.findViewById(R.id.cart_recyclerview);
         LoadCart();
+        //如果选择的条目为全部时，自动勾选全选
+        setCheckAll(cartAdapter.isItemCheckAll());
         showTotalPrice();
     }
 
@@ -123,7 +117,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         //如果购物车没数据则显示空布局，有数据显示列表
         if (CartBeanList != null && CartBeanList.size() > 0) {
             ll_empty_cart.setVisibility(View.GONE);
-            cartAdapter=new CartAdapter(CartFragment.this, CartBeanList);
+            cartAdapter = new CartAdapter(CartFragment.this, CartBeanList);
             rv_cart.setAdapter(cartAdapter);
             rv_cart.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -152,22 +146,34 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 showTotalPrice();
                 break;
             case R.id.btn_pay:
-                ToastUtils.showToast(getContext(),"pay........");
+                ToastUtils.showToast(getContext(), "pay........");
+                break;
+            case R.id.checkbox_all:
+                CheckBox cb_all= (CheckBox) v;
+                cartAdapter.setItemCheckAll(cb_all.isChecked());
+                cartAdapter.notifyDataSetChanged();
+                break;
+            case R.id.cb_editall:
+                CheckBox edit_all= (CheckBox) v;
+                cartAdapter.setItemCheckAll(edit_all.isChecked());
+                cartAdapter.notifyDataSetChanged();
                 break;
         }
 
     }
 
-    public void showTotalPrice(){
+    public void showTotalPrice() {
         List<CartBean> selectedList = SqlUtils.quarySelected();
-        double totalPrice=0.00;
-        for (CartBean bean:selectedList){
-          totalPrice+= PriceFormatUtils.formatPrice(bean.getPrice())*bean.getNum();
+        double totalPrice = 0.00;
+        for (CartBean bean : selectedList) {
+            totalPrice += PriceFormatUtils.formatPrice(bean.getPrice()) * bean.getNum();
         }
-        tv_totalPrice.setText(totalPrice+"");
+        tv_totalPrice.setText(totalPrice + "");
     }
 
-    public void setCheckAll(Boolean isCheck){
+    public void setCheckAll(Boolean isCheck) {
         checkAll.setChecked(isCheck);
+        editAll.setChecked(isCheck);
     }
+
 }
