@@ -1,6 +1,5 @@
 package zzh.com.haostore.cart.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,7 +46,6 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.cart_fragment, null);
         initView();
-
         return view;
 
     }
@@ -75,7 +72,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         rv_cart = view.findViewById(R.id.cart_recyclerview);
         LoadCart();
         //如果选择的条目为全部时，自动勾选全选
-        setCheckAll(cartAdapter.isItemCheckAll());
+        if (cartAdapter!=null) {
+            setCheckAll(cartAdapter.isItemCheckAll());
+        }
         showTotalPrice();
     }
 
@@ -105,12 +104,13 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             LoadCart();
-
         }
     }
 
 
-    //如果本地没数据，加载空的布局。有数据则显示列表布局
+    /**
+     * 加载购物车列表
+     */
     private void LoadCart() {
         CartBeanList = SqlUtils.readLocal();
         Log.d(TAG, "initView: " + CartBeanList.size());
@@ -144,6 +144,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_delete:
                 cartAdapter.deleteDatas();
                 showTotalPrice();
+                setCheckAll(false);//删除后取消全选
                 break;
             case R.id.btn_pay:
                 ToastUtils.showToast(getContext(), "pay........");
@@ -162,6 +163,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * 显示购物车所有勾选的总价格
+     */
     public void showTotalPrice() {
         List<CartBean> selectedList = SqlUtils.quarySelected();
         double totalPrice = 0.00;
@@ -170,6 +174,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         }
         tv_totalPrice.setText(totalPrice + "");
     }
+
 
     public void setCheckAll(Boolean isCheck) {
         checkAll.setChecked(isCheck);

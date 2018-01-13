@@ -2,7 +2,6 @@ package zzh.com.haostore.cart.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -15,10 +14,8 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import zzh.com.haostore.R;
-import zzh.com.haostore.app.Constant;
 import zzh.com.haostore.cart.beans.CartBean;
 import zzh.com.haostore.cart.fragment.CartFragment;
-import zzh.com.haostore.cart.utils.CartStorage;
 import zzh.com.haostore.cart.utils.SqlUtils;
 import zzh.com.haostore.cart.view.NumView;
 import zzh.com.haostore.utils.PriceFormatUtils;
@@ -112,7 +109,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
-    //删除选中数据
+    /**
+     *删除选中数据
+     */
     public void deleteDatas() {
 
         if (cartBeanList.size() > 0 && cartBeanList != null) {
@@ -133,7 +132,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 }
 
-    //把条目设置为全部勾选
+    /**
+     *  把条目设置为全部勾选
+     */
     public void  setItemCheckAll(Boolean isCheck){
         for (CartBean cartBean:cartBeanList){
             cartBean.setIsCheck(isCheck);
