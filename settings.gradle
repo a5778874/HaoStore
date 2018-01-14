@@ -1,2 +1,2 @@
-include ':app', ':page', ':numview', ':greendao_test'
+include ':app', ':page', ':numview', ':greendao_test', ':trpay_demo'
 

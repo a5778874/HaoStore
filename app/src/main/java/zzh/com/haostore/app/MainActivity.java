@@ -1,11 +1,7 @@
 package zzh.com.haostore.app;
 
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.heima.tabview.library.TabView;
 import com.heima.tabview.library.TabViewChild;
@@ -56,7 +52,7 @@ public class MainActivity extends FragmentActivity {
         tabViewChildList.add(tabViewChild04);
         tabViewChildList.add(tabViewChild05);
 
-        TabView tabView = (TabView) findViewById(R.id.tabView);
+        TabView tabView =  findViewById(R.id.tabView);
         tabView.setTabViewChild(tabViewChildList, getSupportFragmentManager());
 
     }

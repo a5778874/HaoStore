@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/greendao_test/greendao_test.iml" filepath="$PROJECT_DIR$/greendao_test/greendao_test.iml" />
       <module fileurl="file://$PROJECT_DIR$/numview/numview.iml" filepath="$PROJECT_DIR$/numview/numview.iml" />
       <module fileurl="file://$PROJECT_DIR$/page/page.iml" filepath="$PROJECT_DIR$/page/page.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trpay_demo/trpay_demo.iml" filepath="$PROJECT_DIR$/trpay_demo/trpay_demo.iml" />
     </modules>
   </component>
 </project>

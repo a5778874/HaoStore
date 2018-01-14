@@ -49,7 +49,7 @@ class hotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         hotID = hotInfoBeanList.get(position).getProduct_id();
         hotNameString = hotInfoBeanList.get(position).getName();
         mholder.hotName.setText(hotNameString);
-        hotPriceString = "¥" + hotInfoBeanList.get(position).getCover_price();
+        hotPriceString = "¥ " + hotInfoBeanList.get(position).getCover_price();
         mholder.hotPrice.setText(hotPriceString);
         hotImgUrl = Constant.BASE_IMGURL + hotInfoBeanList.get(position).getFigure();
         Glide.with(context).load(hotImgUrl).into(mholder.hotImg);
@@ -58,7 +58,6 @@ class hotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             public void onClick(View view) {
 
                 Intent it = new Intent(context, GoodsInfoActivity.class);
-                ;
                 GoodsInfoBean goodsInfoBean = new GoodsInfoBean();
                 goodsInfoBean.setCover_price(hotPriceString);
                 goodsInfoBean.setFigure(hotImgUrl);
