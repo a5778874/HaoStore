@@ -16,8 +16,7 @@ import zzh.com.haostore.R;
  */
 
 public class UserFragment extends Fragment {
-    private EditText et_ip;
-    private Button bt_saveIP;
+
     public static UserFragment fragment = null;
 
 
@@ -25,8 +24,7 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_fragment, null);
-        et_ip= (EditText) view.findViewById(R.id.et_ip);
-        bt_saveIP= (Button) view.findViewById(R.id.bt_saveIP);
+
         return view;
 
     }

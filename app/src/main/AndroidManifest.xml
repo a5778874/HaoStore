@@ -29,6 +29,13 @@
         <activity android:name=".view.GoodsInfoView.GoodsInfoActivity">
 
         </activity>
+
+        <activity android:name=".user.activity.LoginAcitvity">
+
+        </activity>
+        <activity android:name=".user.activity.RegisterAcitvity">
+
+        </activity>
     </application>
 
 </manifest>

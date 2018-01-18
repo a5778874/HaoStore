@@ -7,4 +7,5 @@
     <color name="white">#ffffff</color>
     <color name="priceDark">#9a9a9a</color>
     <color name="priceRed">#ff4c4c</color>
+    <color name="listSelectorColor">#dcdcdc</color>
 </resources>

@@ -48,7 +48,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     private List<CartBean> CartBeanList;
     private List<CartBean> selectedList;
     private CartAdapter cartAdapter;
-    private final String appkey="appkey"; //测试用appkey
+    //private final String appkey="appkey"; //测试用appkey
+    private final String appkey="ba42af842077416b9f5b687e00ce4d56"; //我的appkey
     private final String channel="应用宝";
 
     @Nullable
@@ -202,7 +203,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
     private void pay() {
         double sum = getSelectedPrice();
-        String userid = "trpay@52yszd.com";//商户系统用户ID(如：trpay@52yszd.com，商户系统内唯一)
+        String userid = "zhongzihao@2980.com";//商户系统用户ID(如：商户系统内唯一)
         String outtradeno = UUID.randomUUID() + "";//商户系统订单号(为便于演示，此处利用UUID生成模拟订单号，商户系统内唯一)
         String tradename = selectedList.get(0).getName()+"等共"+selectedList.size()+"件商品";//商品名称
         String backparams = "name=zzh";//商户系统回调参数
@@ -222,10 +223,11 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                  */
                 @Override
                 public void onPayFinish(Context context, String outtradeno, int resultCode, String resultString, int payType, Long amount, String tradename) {
-                    Toast.makeText(context, resultString, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, resultString+"paytype:"+payType+"\ndingdanhao:"+outtradeno, Toast.LENGTH_LONG).show();
                     if (resultCode == TrPayResult.RESULT_CODE_SUCC.getId()) {//1：支付成功回调
                         TrPay.getInstance(context).closePayView();//关闭快捷支付页面
                         Toast.makeText(getActivity(), resultString, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onPayFinish: resultstring:"+resultString+"--paytype:"+payType+"--dingdanhao:"+outtradeno);
                         //支付成功逻辑处理
                     } else if (resultCode == TrPayResult.RESULT_CODE_FAIL.getId()) {//2：支付失败回调
                         Toast.makeText(getActivity(), resultString, Toast.LENGTH_LONG).show();
