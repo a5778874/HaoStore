@@ -41,6 +41,12 @@ public class GoodsInfoActivity extends AppCompatActivity {
         more_layout = (LinearLayout) findViewById(R.id.ll_root);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.mipmap.arrowback);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoodsInfoActivity.this.finish();
+            }
+        });
         MinePagerAdapter minePagerAdapter = new MinePagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(3);
         viewpager.setAdapter(minePagerAdapter);
