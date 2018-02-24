@@ -2,7 +2,6 @@ package zzh.com.haostore.user.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
 import zzh.com.haostore.R;
@@ -13,8 +12,8 @@ import zzh.com.haostore.R;
 
 public class RegisterAcitvity extends Activity {
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
     }
 }
